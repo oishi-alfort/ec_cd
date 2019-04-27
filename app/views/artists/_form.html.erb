@@ -1,18 +1,30 @@
+<div class="container">
+<div class="row">
+<div class="col-lg-4">
+</div>
 <div class="col-lg-4">
 <%= form_with model: artist do |f| %>
 <%= render 'layouts/error_messages', model: f.object %>
   <div>
-  <%= f.label :artist_image %>
+  <%= f.label :artist_image, "歌手画像" %>
   <%= f.attachment_field :artist_image, class: "form-control" %>
   </div>
 	<div>
-	<%= f.label :artist_name %>
+	<%= f.label :artist_name, "歌手名" %>
   	<%= f.text_field :artist_name, class: "form-control" %>
   	</div>
   	<div>
-	<%= f.label :artist_profile %>
+	<%= f.label :artist_profile, "歌手プロフィール" %>
   	<%= f.text_area :artist_profile, rows: "5", class: "form-control" %>
   	</div>
-  	<%= f.submit  class: "btn btn-default" %>
+    <div class="text-center">
+  	<%= f.submit "登録",  class: "btn btn-default btn-lg" %>
+    </div>
 <% end %>
 </div>
+
+<div class="col-lg-4">
+</div>
+</div>
+</div>
+

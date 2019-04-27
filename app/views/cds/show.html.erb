@@ -23,7 +23,7 @@
 			<div>
 				<% if user_signed_in? %>
 					<div class="inline-block">
-							<%= form_for(@cart_item) do |f| %>
+							<%= form_for(@cart_item, url:cart_item_path) do |f| %>
 								<div class="inline-block">
 									<p>数量: <%= f.number_field :quantity, class: "form-control" %></p>
 								</div>
@@ -58,7 +58,7 @@
 								</div>
 								<%= f.hidden_field :user_id, value: "0" %>
 								<div class="inline-block">
-									<%= button_tag type: 'submit', class: "btn" do %>
+									<%= button_to add_item_path(cd.id), method: :post do %>
 										<i class="fas fa-cart-arrow-down" style="font-size:30px;"></i>
 									<% end %>
 								</div>
@@ -66,6 +66,7 @@
 					</div>
 
 					<div class="inline-block">
+
 						<button type="button" data-toggle="modal" data-target="#exampleModal">
   							<i class="far fa-heart" aria-hidden="true"></i>
 						</button>
@@ -91,6 +92,15 @@
   							</div>
 						</div>
 					</div>
+
+						<button type="button" data-toggle="modal" data-target="#exampleModal" class="btn btn-default btn-sm">
+  							<i class="far fa-heart" aria-hidden="true"></i>
+						</button>
+						<%= @cd.favorites.count %>
+						<%= render 'modal' %>
+					</div>
+
+
 			<% end %>
 
 				<% if user_signed_in? && current_user.admin?  %>
@@ -176,9 +186,18 @@
 											</div>
 										<%= f.submit %>
 										<% end %>
+
 									</div>
 									<% else %>
 										<strong><%= link_to "返信するためにはログインしてください!", new_user_session_path %></strong>
+
+									<% else %>
+										<div class="inline-block">
+											<button type="button" data-toggle="modal" data-target="#exampleModal" class="btn btn-default btn-sm">返信</button>
+												<%= render 'modal' %>
+										</div>
+										</div>
+
 									<% end %>
 								</td>
 							</tr>
@@ -200,7 +219,17 @@
 				<% end %>
 				</div>
 				<% else %>
+
+        
 					<strong><%= link_to "コメントをするにはログインしてください!", new_user_session_path %></strong>
+        
+        
+				<div class="inline-block">
+					<button type="button" data-toggle="modal" data-target="#exampleModal" class="btn btn-default btn-sm">コメントを送る</button>
+						<%= render 'modal' %>
+				</div>
+        
+        
 				<% end %>
 <!-- [END] New Comment -->
 			</div>

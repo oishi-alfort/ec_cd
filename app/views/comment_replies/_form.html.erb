@@ -1,5 +1,10 @@
-<%= form_for @comment_reply, url: comment_comment_replies_path(comment_id: comeid)  do |f| %>
-	<%= f.label :comment_reply_body %>
-	<%= f.text_field :comment_reply_body, class: "form-control" %>
-	<%= f.submit %>
+<%= form_for(comment, comment_reply) do |f| %>
+<div>
+<%= f.label :comment_reply_body, "返信内容" %>
+<%= f.text_field :comment_reply_body, class: "form-control" %>
+<%= f.hidden_field :comment_id, value: comment.id %>
+<%= f.hidden_field :user_id, value: current_user.id %>
+<%= f.hidden_field_tag :cd_id, value: comment.cd_id %>
+</div>
+<%= f.submit %>
 <% end %>

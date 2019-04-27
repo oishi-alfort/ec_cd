@@ -1,0 +1,32 @@
+<%= form_with(model: pickup, local: true) do |form| %>
+  <% if pickup.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(pickup.errors.count, "error") %> prohibited this pickup from being saved:</h2>
+
+      <ul>
+      <% pickup.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :cd_id, "CDのID" %>
+    <%= form.number_field :cd_id, readonly: true %>
+  </div>
+
+  <div class="field">
+    <%= form.label :pickup_title, "ピックアップ・ヘッドライン" %>
+    <%= form.text_field :pickup_title, class: "form-control" %>
+  </div>
+
+  <div class="field">
+    <%= form.label :pickup_body, "本文" %>
+    <%= form.text_area :pickup_body, rows: 10, class: "form-control" %>
+  </div>
+
+  <div class="actions text-center">
+    <%= form.submit "登録", class: "btn btn-default btn-lg" %>
+  </div>
+<% end %>

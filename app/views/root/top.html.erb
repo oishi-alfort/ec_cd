@@ -3,26 +3,23 @@
 		<div class="row">
 			<div class="col-md-3">
 				<div class="panel panel-default">
-					<div class="panel-heading">ジャンルで探す</div>
+					<div class="panel-heading"><%= link_to "ジャンルで探す",'/categories' %></div>
 					<div class="panel-body">
-						<p>J-Pop</p>
-						<p>ロック</p>
-						<p>ポップス</p>
-						<p>ラップ</p>
-						<p>ソウル</p>
-						<p>カントリー</p>
-						<p>ジャズ</p>
-						<p>ニューエイジ</p>
-						<p>サウンドトラック</p>
+						<% @categories.each do |category| %>
+						<tr>
+							<li><%= link_to category.category_name, category_path(category.id) %></li>
+						</tr>
+						<% end %>
 					</div>
 				</div>
 				<div class="panel panel-default">
 					<div class="panel-heading">ピックアップ</div>
 					<div class="panel-body">
-						<p>Admin Review Title</p>
-						<p>Admin Review Title</p>
-						<p>Admin Review Title</p>
-						<p>Admin Review Title</p>
+						<% @pickups.each do |pickup| %>
+						<tr>
+							<li><%= link_to pickup.pickup_title, pickup_path(pickup.id) %></li>
+						</tr>
+						<% end %>
 					</div>
 				</div>
 			</div>

@@ -1,16 +1,53 @@
 <div class="container">
-	<div clas="row">
-		<h1>Categories#index</h1>
-			<% if @categories.present? %>
-			<% @categories.each do |category| %>
+	<h1>カテゴリー一覧</h1>
+	<% if @categories.present? %>
+		<div clas="row">
+			<div class="col-lg-4">
+				<% @categories.each do |category| %>
+				<% if category.id % 3 == 0 %>
 				<div class="eachCategory">
 					<%= link_to category_path(category.id) do %>
-					<%= attachment_image_tag category.cds.last, :cd_image, :fill, 100, 100, fallback: "no_image.jpg" %>
+					<%= attachment_image_tag(category.cds.last, :cd_image, :fill, 210, 230, format: "jpg", fallback: "no_image.jpg", size: '100X100') %>
 					<% end %>
-					<p><%= link_to category.category_name, category_path(category.id) %></p>
+					<p><%= link_to category.category_name, category_path(category.id) %><%= category.id %></p>
 				</div>
-			<% end %>
-			<% end %>
+				<% end %>
+				<% end %>
+			</div>
+			<div class="col-lg-4">
+				<% @categories.each do |category| %>
+				<% if category.id % 3 == 2 %>
+				<div class="eachCategory">
+					<%= link_to category_path(category.id) do %>
+					<%= attachment_image_tag(category.cds.last, :cd_image, :fill, 210, 230, format: "jpg", fallback: "no_image.jpg", size: '100X100') %>
+					<% end %>
+					<p><%= link_to category.category_name, category_path(category.id) %><%= category.id %></p>
+				</div>
+				<% end %>
+				<% end %>
+			</div>
+			<div class="col-lg-4">
+				<% @categories.each do |category| %>
+				<% if category.id % 3 == 1 %>
+				<div class="eachCategory">
+					<%= link_to category_path(category.id) do %>
+					<%= attachment_image_tag(category.cds.last, :cd_image, :fill, 210, 230, format: "jpg", fallback: "no_image.jpg", size: '100X100') %>
+					<% end %>
+					<p><%= link_to category.category_name, category_path(category.id) %><%= category.id %></p>
+				</div>
+				<% end %>
+				<% end %>
+			</div>
+		</div>
+	<% end %>
+</div>
+<div class="container">
+	<div clas="row">
+		<div class="col-lg-2">
+			<%= link_to "戻る", root_path, class: "btn btn-default" %>
+		</div>
+		<div class="col-lg-10">
+		</div>
 	</div>
 </div>
 
@@ -19,5 +56,5 @@
 		height: 300px;
 		display: inline-block;
 	}
-	
-	
+
+</style>

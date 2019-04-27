@@ -1,4 +1,5 @@
 class CartItem < ApplicationRecord
-	def show
-	end
+	belongs_to :cd
+	belongs_to :user
+	belongs_to :cart
 end

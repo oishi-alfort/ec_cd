@@ -1,0 +1,13 @@
+<div class="body">
+	<div class="container">
+		<div clas="row">
+			<% if @cart_items.nil? %>
+			<p class="text-center">カートが空です</p>z
+			<% else %>
+			<% @cart_items.each do |cart_item| %>
+			<%= @cart_item %>
+			<% end %>
+			<% end %>
+		</div>
+	</div>
+</div>

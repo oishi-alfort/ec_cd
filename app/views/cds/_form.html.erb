@@ -1,50 +1,71 @@
-<div class="col-lg-8">
-<%= form_for(cd) do |f| %>
-<%= render 'layouts/error_messages', model: f.object %>
-	<div>
-	 <%= f.label :cd_title %>
-    <%= f.text_field :cd_title, class: "form-control" %>
-  </div>
-
+<div class="container">
   <div class="row">
-  <div class="col-lg-4">
-    <%= f.label :cd_image %>
-    <%= f.attachment_field :cd_image, class: "form-control" %>
-  </div>
-  </div>
-  
-  <div>
-	 <%= f.label :artist_id %>
-   <%= f.collection_select(:artist_id, @artists, :id, :artist_name, class: "form-control") %>
-  </div>
+    <div class="col-lg-8">
+      
+      <%= form_for(cd) do |f| %>
+      <%= render 'layouts/error_messages', model: f.object %>
+      <div>
+        <%= f.label :cd_title, "CDタイトル" %>
+        <%= f.text_field :cd_title, class: "form-control" %>
+      </div>
 
-  <div>
-	 <%= f.label :label_id %>
-   <%= f.collection_select(:label_id, @labels, :id, :label_name, class: "form-control") %>
-  </div>
+      <div id="disc_numbers">
+        <%= f.fields_for :disc_numbers do |disc_number| %>
+        <%= render 'disc_number_fields', f: disc_number %>
+        <% end %>
+        <div id="links">
+          <%= link_to_add_association 'ディスク枚数を増やす',f, :disc_numbers %>
+        </div>
+      </div>
 
-  <div>
-    <%= f.label :category_id %>
-    <%= f.collection_select(:category_id, @categories, :id, :category_name, class: "form-control") %>
-  </div>
+      <div class="row">
+        <div class="col-lg-5">
+          <%= f.label :cd_image, "CD画像" %>
+          <%= f.attachment_field :cd_image, class: "form-control" %>
+        </div>
+      </div>
 
-  <div>
-    <%= f.label :stock %>
-    <%= f.number_field :stock %>
-  </div>
+      <div>
+        <%= f.label :artist_id, "歌手" %>
+        <%= f.collection_select(:artist_id, @artists, :id, :artist_name, {}, {class: "formPosition"}) %>
+      </div>
 
-  <div>
-    <%= f.label :price %>
-    <%= f.number_field :price %>
-  </div>
+      <div>
+        <%= f.label :label_id, "レーベル" %>
+        <%= f.collection_select(:label_id, @labels, :id, :label_name, {}, {class: "formPosition"}) %>
+      </div>
 
-  <div>
-    <%= f.label :cd_profile %>
-  	<%= f.text_area :cd_profile, rows: "5", class: "form-control" %>
-  </div>
+      <div>
+        <%= f.label :category_id, "カテゴリー" %>
+        <%= f.collection_select(:category_id, @categories, :id, :category_name, {}, {class: "formPosition"}) %>
+      </div>
 
-  <div>
-  <%= f.submit  class: "btn btn-default" %>
+      <div>
+        <%= f.label :stock, "在庫数" %>
+        <%= f.number_field :stock, class: "formPosition" %>
+      </div>
+
+      <div>
+        <%= f.label :price, "価格" %>
+        <%= f.number_field :price, class: "formPosition" %>
+      </div>
+
+      <div>
+        <%= f.label :cd_profile, "CD詳細情報" %>
+        <%= f.text_area :cd_profile, rows: "5", class: "form-control" %>
+      </div>
+
+      <div>
+        <%= f.submit "登録",  class: "btn btn-default" %>
+      </div>
+      <% end %>
+    </div>
   </div>
-<% end %>
 </div>
+
+<style>
+.formPosition {
+  position: absolute;
+  left: 20%;
+}
+</style>

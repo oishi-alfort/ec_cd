@@ -5,25 +5,42 @@ Rails.application.routes.draw do
   resources :inquiries
  
   resources :artists, only: [:new, :create, :edit, :update, :show, :destroy]
-  resources :labels, only: [:create, :update, :index, :destroy]
+  resources :labels, only: [:create, :update, :index, :show, :destroy]
+  resources :categories, only: [:create, :index, :show]
   resources :cds do
-    resources :comments, only: [:create], shallow: true do
-      resources :comment_replies, only: [:create, :destroy]
+
+    #ryo
+    resources :disc_numbers,only:[:new, :edit, :create, :update, :destroy] do
+      resources :songs,only:[:new, :edit, :create, :update, :destroy]
+    end
+    #/ryo
+
+    resources :comments, only: [:create, :update], shallow: true do
+      resources :comment_replies, only: [:create, :update, :destroy]
     end
     resource :favorite, only: [:create, :destroy]
   end
-delete 'cd/:id/comments/:id', to: 'comments#destroy', as: 'cd_comment'
-  resources :labels, only: [:create, :index, :show, :destroy]
-  resources :categories, only: [:create, :index, :show]
-  
+
+  delete 'cd/:id/comments/:id', to: 'comments#destroy', as: 'cd_comment'
+
+  devise_scope :user do
+    get '/logout', to: 'devise/sessions#destroy', as: :logout
+  end
+  resources :pickups, only: [:new, :create, :edit, :update, :show, :destroy]
+  get '/search', to: 'searches#result', as: :search
+
+
   #ryo
   root :to => "root#top"
   get '/about' => 'root#about',as: 'about'
-  resources :songs,only: [:show,:new,:create,:edit,:update]
-  resources :cart_items,only: [:show,:create,:update,:destroy]
-  resources :orders,only:[:index,:show,:create,:edit,:update]
   get '/checkout' => 'orders#checkout',as: 'checkout'
   get '/confirmation' => 'orders#confirmation',as: 'confirmation'
+  resources :cart_items, only:[:create, :update, :destroy]
+  get '/cart' => 'carts#cart',as: 'cart'
+  post '/add_item' => 'carts#add_item', as: 'add_item'
+  post '/update_item' => 'carts#update_item',as: 'update_item'
+  delete '/delete_item' => 'carts#delete_item', as: 'delete_item'
+
 
   # get 'categories/index'
   # get 'categories/show'

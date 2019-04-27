@@ -3,7 +3,7 @@ class CreateCartItems < ActiveRecord::Migration[5.2]
     create_table :cart_items do |t|
       t.integer :user_id
       t.integer :cd_id
-      t.integer :quantity
+      t.integer :quantity, default: 0
 
       t.timestamps
     end

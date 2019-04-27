@@ -1,0 +1,23 @@
+<div class="body">
+	<h1>新規ピックアップ</h1>
+		<% @cds.each do |cd| %>
+		<div class="inline-block">
+			<%= form_for(@pickup) do |f| %>
+				<%= attachment_image_tag(cd, :cd_image, :fill, 300, 300) %>
+				<p><%= link_to cd.cd_title, cd_path(cd.id) %></p>
+				<p><%= link_to cd.artist.artist_name, artist_path(cd.artist.id) %></p>
+				<p>価格: <%= cd.price %></p>
+			<%= f.hidden_field :cd_id, value: cd.id %>
+			<%= f.hidden_field :pickup_title, value: 'Put Pickup Title' %>
+			<%= f.hidden_field :pickup_body, value: 'Put Pickup Body' %>
+			<%= f.submit "ピックアップを作成する", class: "form-control" %>
+			<% end %>
+		</div>
+		<% end  %>
+</div>
+
+<style>
+	.inline-block {
+		display: inline-block;
+	}
+</style>

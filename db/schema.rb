@@ -10,7 +10,9 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_04_20_024333) do
+
+ActiveRecord::Schema.define(version: 2019_04_24_110508) do
+
 
   create_table "artists", force: :cascade do |t|
     t.string "artist_name"
@@ -23,7 +25,13 @@ ActiveRecord::Schema.define(version: 2019_04_20_024333) do
   create_table "cart_items", force: :cascade do |t|
     t.integer "user_id"
     t.integer "cd_id"
-    t.integer "quantity"
+    t.integer "quantity", default: 0
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "cart_id"
+  end
+
+  create_table "carts", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -127,6 +135,14 @@ ActiveRecord::Schema.define(version: 2019_04_20_024333) do
     t.integer "cd_id"
     t.string "pickup_title"
     t.text "pickup_body"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "pickups", force: :cascade do |t|
+    t.integer "cd_id", null: false
+    t.string "pickup_title", null: false
+    t.text "pickup_body", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

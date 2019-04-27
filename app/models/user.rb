@@ -5,6 +5,7 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable
   has_many :favorites, dependent: :destroy
   has_many :comments
+  
   has_many :inquiries
     validates :user_name, presence: true
     validates :password, presence: true
@@ -16,5 +17,15 @@ class User < ApplicationRecord
     validates :phone_number, presence: true
     #VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
     validates :email, presence: true, uniqueness: true
+
+
+  has_many :comment_replies, through: :comments
+
+
+  #ryo
+  has_many :cart_items, dependent: :destroy
+  has_many :orders, dependent: :destroy
+
+
 
 end

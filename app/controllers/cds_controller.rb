@@ -8,6 +8,8 @@ class CdsController < ApplicationController
     @artists = Artist.all.reverse_order
     @labels = Label.all.reverse_order
     @categories = Category.all.reverse_order
+    @disc_number = @cd.disc_numbers.build #ryo
+
   end
 
   def create
@@ -32,7 +34,7 @@ class CdsController < ApplicationController
     @cd = Cd.find(params[:id])
     if @cd.update(cd_params)
       flash[:notice] = "Cd Updated!"
-      redirect_to cd_params(@cd.id)
+      redirect_to cd_path(@cd)
     else
       flash[:notice] = "Error!"
       render :edit
@@ -41,8 +43,9 @@ class CdsController < ApplicationController
 
   def show
     @cd = Cd.find(params[:id])
-    @comment = @cd.comments.new
+    @comment = Comment.new
     @comment_reply = CommentReply.new
+    @cart_item = CartItem.new
   end
 
   def destroy
