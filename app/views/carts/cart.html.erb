@@ -1,13 +1,57 @@
 <div class="body">
 	<div class="container">
 		<div clas="row">
-			<% if @cart_items.nil? %>
-			<p class="text-center">カートが空です</p>z
+			<div class="notif-top">
+    			<% if flash[:notice] %>
+       			 <div class="flash bg-warning">
+        			<%= flash[:notice] %>
+       			 </div>
+    			<% end %>
+			</div>
+
+			<% if @cart.cart_items.present? %>
+			<table>
+				<th>商品</th>
+				<th></th>
+				<th>価格</th>
+				<th>数量</th>
+				<th>更新</th>
+				<th>小計</th>
+				<th>削除</th>
+				<% @cart.cart_items.each do |item| %>
+				<tr>
+					<td><%= attachment_image_tag(item.cd, :cd_image, :fill, 200, 200) %></td>
+					<td><%= item.cd.cd_title %><br><%= item.cd.artist.artist_name %></td>
+					<td>¥ <%= item.cd.price %></td>
+					<%= form_for(item) do |f| %>
+					<td><%= f.number_field :quantity, class: "quantityFormInCart" %></td>
+					<td><%= f.submit '更新', class: "btn btn-default btn-sm" %></td>
+					<% end %>
+					<td>¥ <%= item.quantity * item.cd.price %></td>
+					<td><%= link_to "x", cart_item_path(item.id), method: :delete, class: "btn btn-default" %></td>
+				</tr>
+				<% end %>
+			</table>
 			<% else %>
-			<% @cart_items.each do |cart_item| %>
-			<%= @cart_item %>
-			<% end %>
+				<p class="text-center">カートが空です</p>
 			<% end %>
 		</div>
 	</div>
+
+	<div>
+		<%= link_to "Checkout", checkout_path, class: "btn btn-default"  %>
+	</div>
 </div>
+
+<style>
+table th {
+	padding: 0 10px;
+}
+table td {
+	padding: 0 10px;
+}
+.quantityFormInCart {
+	width: 50px;
+	border-radius: 3px;
+}
+</style>

@@ -1,0 +1,10 @@
+<% if @post_image.errors.any? %>
+<div id="error_explanation">
+ <h2><%= @post_image.errors.count %>件のエラーが発生しました。</h2>
+ <ul>
+<% @post_image.errors.full_messages.each do |message| %>
+<li><%= message %></li>
+<% end %>
+</ul>
+</div>
+ <% end %>

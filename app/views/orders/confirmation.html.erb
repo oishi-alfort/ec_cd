@@ -1,1 +1,28 @@
-confirmation
+<div class="container">
+	<div class="row">
+		<div class="col-lg-8">
+<%= render 'orders/header' %>
+<h3>支払いが確認されました</h3>
+
+<h3>配達は <%= @order.planned_delivery_date.strftime('%Y年%m月%d日') %>に予定されています。</h3>
+
+<%= link_to "購入を完了する", status_path(@order), class: "btn btn-default" %>
+
+</div>
+<div class="col-lg-4 cartTotal">
+			<%= render 'cart', order: @order %>
+</div>
+</div>
+</div>
+<script>
+	$(document).ready(function(){
+		$('#fst').html('<i class="fas fa-circle"></i>')
+		$('#snd').html('<i class="fas fa-circle"></i>')
+		$('#trd').html('<i class="fas fa-circle"></i>')
+	});
+</script>
+<style>
+.cartTotal {
+	border: 1px solid black;
+}
+</style>

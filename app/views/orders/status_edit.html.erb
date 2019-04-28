@@ -1,0 +1,42 @@
+<div class="container">
+	<div class="row">
+<h3>配送状況編集</h3>
+<%= form_for(@order) do |f| %>
+<table>
+	<th>配送ステータス</th>
+	<th>日付</th>
+
+	<tr>
+		<td>出荷準備完了</td>
+		<td><%= f.datetime_select :ready_to_shipping_date, {default: Date.today + 0.hour } %></td>
+		<td></td>
+	</tr>
+	<tr>
+		<td>出荷日</td>
+		<td><%= f.datetime_select :shipping_date, {default: Date.today + 0.hour } %></td>
+		<td></td>
+	</tr>
+</table>
+
+<h3>Order Id is <%= @order.id %></h3>
+<h3>商品到着予定日</h3>
+<td><%= f.datetime_select :planned_delivery_date %></td>
+<%= f.submit "更新" %>
+<% end %>
+<%= link_to "トップに戻る", root_path, class: "btn btn-default" %>
+</div>
+</div>
+<script>
+	$(document).ready(function(){
+		$('#fst').html('<i class="fas fa-circle"></i>')
+		$('#snd').html('<i class="fas fa-circle"></i>')
+		$('#trd').html('<i class="fas fa-circle"></i>')
+		$('#lst').html('<i class="fas fa-circle"></i>')
+		$('.colored').html('<i class="fas fa-circle"></i>')
+	});
+</script>
+<style>
+th, td {
+	padding: 10px;
+}
+</style>

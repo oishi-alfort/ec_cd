@@ -1,90 +1,52 @@
-<div class="body">
 <div class="container">
 	<div clas="row">
-<h1>「<%= params[:q][:cd_title_cont] %>」検索結果</h1>
-<% if @search_cds.present? %>
-<% @search_cds.each do |result| %>
-	<div class="col-lg-4 inline-block">
-	<div>
-		<%= attachment_image_tag(result, :cd_image, :fill, 300, 300) %>
-	</div>
-	<h2><%= result.cd_title %></h2>
-	<div>
-		<% if user_signed_in? %>
-			<div class="inline-block">
-				<%= form_for(@cart_item) do |f| %>
-					<%= f.hidden_field :quantity, value: 1 %></p>
-					<div class="inline-block">
-						<%= button_tag type: 'submit', class: "btn" do %>
-							<i class="fas fa-cart-arrow-down" style="font-size:30px;"></i>
-						<% end %>
-					</div>
-				<% end %>
-			</div>
+	<h1>「<%= params[:q][:cd_title_cont] %>」検索結果</h1>
+	<% if @search_cds.present? %>
+		<% @search_cds.each do |result| %>
+			<div class="col-lg-4 inline-block">
+				<div>
+				<%= attachment_image_tag(result, :cd_image, :fill, 300, 300) %>
+				</div>
+				<h2><%= result.cd_title %></h2>
+				<div>
 
-			<div class="inline-block">
-				<% if result.favorited_by?(current_user) %>
-					<div>
-						<%= link_to cd_favorite_path(result), method: :delete do %>
-							<i class="far fa-heart" aria-hidden="true" style="color: red;"></i><%= result.favorites.count %>
-						<% end %>
-					</div>
-				<% else %>
-					<div>
-						<%= link_to cd_favorite_path(result), method: :post do %><%= result.favorites.count %>
-							<i class="far fa-heart" aria-hidden="true"></i>
-						<% end %>
-					</div>
-				<% end %>
-			</div>
-		<% else %>
-			<div class="inline-block">
-				<%= form_for(@cart_item) do |f| %>
-					<div class="inline-block">
-						<p>数量: <%= f.number_field :quantity, class: "form-control" %></p>
+					<% if current_cart.cart_items.find_by(cd_id: result.id).present? %>
+							<div class="itemInCartNotif">
+								<p>This product is alredy in your cart!</p>
 							</div>
-								<%= f.hidden_field :user_id, value: "0" %>
-							<div class="inline-block">
-								<%= button_tag type: 'submit', class: "btn" do %>
-									<i class="fas fa-cart-arrow-down" style="font-size:30px;"></i>
-								<% end %>
-							</div>
-				<% end %>
+							<% itemInCart = current_cart.cart_items.find_by(cd_id: result.id) %>
+							<%= form_for(itemInCart) do |f| %>
+							<%= render 'layouts/error_messages', model: f.object %>
+								<div class="inline-block">
+									<p>数量: <%= f.number_field :quantity, class: "quantity-field" %></p>
+								</div>
+								<div class="inline-block">
+									<%= button_tag type: 'submit', method: :post, url: cart_items_path, class: "btn" do %>
+										<i class="fas fa-cart-arrow-down" style="font-size:30px;"></i>
+									<% end %>
+								</div>
+							<% end %>
+						<% else %>
+							<%= form_for(@cart_item) do |f| %>
+							<%= render 'layouts/error_messages', model: f.object %>
+								<div class="inline-block">
+									<p>数量: <%= f.number_field :quantity, class: "quantity-field" %></p>
+								</div>
+								<%= f.hidden_field :cd_id, value: result.id %>
+								<%= f.hidden_field :cart_id, value: current_cart.id %>
+								<div class="inline-block">
+									<%= button_tag type: 'submit', method: :post, url: cart_items_path, class: "btn" do %>
+										<i class="fas fa-cart-arrow-down" style="font-size:30px;"></i>
+									<% end %>
+								</div>
+							<% end %>
+						<% end %>
+				</div>
 			</div>
-
-			<div class="inline-block">
-						<button type="button" data-toggle="modal" data-target="#exampleModal">
-  							<i class="far fa-heart" aria-hidden="true"></i>
-						</button>
-						<%= result.favorites.count %>
-
-						<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  							<div class="modal-dialog" role="document">
-    							<div class="modal-content">
-      								<div class="modal-header">
-       									 <h5 class="modal-title" id="exampleModalLabel">いいねを押すにはログインしてください。</h5>
-        								<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-         									<span aria-hidden="true">&times;</span>
-      									</button>
-      								</div>
-      								<div class="modal-body">
-      									<%= link_to "Log In", new_user_session_path, class: "btn btn-default btn-sm" %>
-      									<%= link_to "Sign Up", new_user_registration_path, class: "btn btn-default btn-sm" %>
-      								</div>
-      								<div class="modal-footer">
-       									<button type="button" class="btn btn-secondary" data-dismiss="modal">閉じる</button>
-      								</div>
-    							</div>
-  							</div>
-						</div>
-					</div>
-			<% end %>
-	</div>
-	</div>
-<% end %>
-<% else %>
+		<% end %>
+	<% else %>
 	<h1>No Match</h1>
-<% end %>
+	<% end %>
 </div>
 </div>
 
@@ -97,6 +59,7 @@
 		</div>
 	</div>
 </div>
+</div>
 
 
 <style>
@@ -105,5 +68,13 @@
 	}
 	.inline-block {
 		display: inline-block;
+	}
+	.quantity-field {
+		width: 50px;
+		border-radius: 3px;
+	}
+	.itemInCartNotif {
+		background-color: pink;
+		padding: 5px 10px 0 10px;
 	}
 </style>

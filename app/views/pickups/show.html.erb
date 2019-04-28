@@ -1,5 +1,3 @@
-<div class="blank">
-</div>
 <div class="container">
 	<div clas="row">
 		<div class="col-lg-10">
@@ -48,19 +46,7 @@
 					</div>
 
 					<div class="inline-block">
-						<% if @pickup.cd.favorited_by?(current_user) %>
-							<div>
-								<%= link_to cd_favorite_path(@pickup.cd), method: :delete do %>
-								<i class="far fa-heart" aria-hidden="true" style="color: red;"></i><%= @pickup.cd.favorites.count %>
-								<% end %>
-							</div>
-						<% else %>
-							<div>
-							<%= link_to cd_favorite_path(@pickup.cd), method: :post do %><%= @pickup.cd.favorites.count %>
-							<i class="far fa-heart" aria-hidden="true"></i>
-							<% end %>
-							</div>
-						<% end %>
+						<%= render 'cds/favorite', cd: @pickup.cd %>
 					</div>
 			<% else %>
 					<div class="inline-block">
@@ -183,10 +169,6 @@
 	}
 	.hoverGray div {
 
-	}
-	.blank {
-		height: 20px;
-		width: 100%;
 	}
 	.inline-block {
 		display: inline-block;

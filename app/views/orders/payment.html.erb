@@ -1,0 +1,50 @@
+<div class="container">
+	<div class="row">
+		<div class="col-lg-8">
+			<%= render 'header' %>
+			<h1>Checkouts#payment</h1>
+
+				<%= form_tag("/omise", method: :post) do %>
+				<input type="text" name="number" maxlength="16" placeholder="カード番号"><br>
+				<input type="text"  name="cvc" maxlength="3" placeholder="CVC"><br>
+				<input type="text" name="name" placeholder="NAME">
+				<input type="text" name="exp_month" maxlength="2" placeholder="月">
+				<input type="text" name="exp_year" maxlength="4" placeholder="西暦（４桁）"><br>
+				<input type="text" name="city" placeholder="City">
+				<input type="text" name="postal_code" maxlength="7" placeholder="Postalcode">
+				<% subTotal = 0 %>
+				<% totalPrice = 0 %>
+				<% if @order.order_items.present? %>
+					<% @order.order_items.each do |item| %>
+					<% subTotal = item.price * item.quantity %>
+					<% totalPrice = totalPrice + subTotal %>
+					<%= hidden_field_tag :amount, totalPrice %>
+					<% end %>
+				<% else %>
+					<% totalPrice = @cart.order.order_items.price * @cart.order.order_items.quantity %>
+					<%= hidden_field_tag :amount, totalPrice %>
+				<% end %>
+				<div class="priceBox">
+					<h3>Total price is <%= totalPrice %> yen</h3>
+				</div>
+				<input type="submit">
+				<% end %>
+		</div>
+
+		<div class="col-lg-4 cartTotal">
+			<%= render 'cart', order: @order %>
+		</div>
+	</div>
+</div>
+
+<script>
+	$(document).ready(function(){
+		$('#fst').html('<i class="fas fa-circle"></i>')
+		$('#snd').html('<i class="fas fa-circle"></i>')
+	});
+</script>
+<style>
+.cartTotal {
+	border: 1px solid black;
+}
+</style>

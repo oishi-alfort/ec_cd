@@ -1,11 +1,13 @@
+<div class="blank">
+</div>
 <% if flash[:notice] %>
   <p><%= flash[:notice] %></p>
 <% end %>
-   <h2>Log in</h2>
+   <h2>USER Log in</h2>
       <div class = "container">
         <div class = "row">
           <div class="col-md-2 col-md-offset-5">
-              <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+              <%= form_for(resource, as: resource_name, url: user_session_path) do |f| %>
                  <div class="field">
                     <%= f.label :email %>
                     <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
@@ -20,3 +22,9 @@
         </div>
       </div>
 <% end %>
+<style>
+  .blank {
+    height: 100px;
+    width:100% ;
+  }
+</style>

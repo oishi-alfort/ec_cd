@@ -1,0 +1,57 @@
+<div class="container">
+	<div class="row">
+		<div class="col-lg-8">
+<h3>配送状況</h3>
+<table id="statusTable">
+	<th>配送ステータス</th>
+	<th></th>
+	<th>日付</th>
+	<tr>
+		<td>出荷準備中</td>
+		<td><i class="fas fa-circle"></i></td>
+		<td></td>
+	</tr>
+	<tr>
+		<td>出荷準備完了</td>
+		<% if @order.ready_to_shipping_date.present? %>
+		<td><i class="fas fa-circle"></i></td>
+		<td><%= @order.ready_to_shipping_date.strftime('%Y年%m月%d日') %></td>
+		<% else %>
+		<td><i class="far fa-circle"></i></td>
+		<td></td>
+		<% end %>
+	</tr>
+	<tr>
+		<td>出荷日</td>
+		<% if @order.shipping_date.present? %>
+		<td><i class="fas fa-circle"></i></td>
+		<td><%= @order.shipping_date.strftime('%Y年%m月%d日') %></td>
+		<% else %>
+		<td><i class="far fa-circle"></i></td>
+		<td></td>
+		<% end %>
+	</tr>
+</table>
+
+<h3>注文ID： <%= @order.id %></h3>
+<h3>出荷予定日： <%= @order.planned_delivery_date.strftime('%Y年%m月%d日') %></h3>
+
+<%= link_to "トップに戻る", root_path, class: "btn btn-default" %>
+
+		</div>
+
+		<div class="col-lg-4 cartTotal">
+			<%= render 'cart', order: @order %>
+		</div>
+	</div>
+</div>
+<script>
+</script>
+<style>
+.cartTotal {
+	border: 1px solid black;
+}
+#statusTable th, #statusTable td {
+	padding: 20px 10px;
+}
+</style>

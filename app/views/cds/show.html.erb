@@ -15,93 +15,58 @@
 		<div class="col-lg-6">
 			<strong><%= @cd.cd_title %></strong>
 			<p><%= link_to @cd.artist.artist_name, artist_path(@cd.artist.id) %></p>
-			<p>価格: <%= @cd.price %></p>
+			<p>価格: ¥ <%= @cd.price %></p>
 			<% if user_signed_in? && current_user.admin?  %>
 				<p>在庫数: <%= @cd.stock %></p>
 			<% end %>
 
 			<div>
-				<% if user_signed_in? %>
+
 					<div class="inline-block">
-							<%= form_for(@cart_item, url:cart_item_path) do |f| %>
+						<% if current_cart.cart_items.find_by(cd_id: @cd.id).present? %>
+							<div class="itemInCartNotif">
+								<p>This product is alredy in your cart!</p>
+							</div>
+							<% itemInCart = current_cart.cart_items.find_by(cd_id: @cd.id) %>
+							<%= form_for(itemInCart) do |f| %>
+							<%= render 'layouts/error_messages', model: f.object %>
 								<div class="inline-block">
-									<p>数量: <%= f.number_field :quantity, class: "form-control" %></p>
+									<p>数量: <%= f.number_field :quantity, class: "quantity-field" %></p>
 								</div>
 								<div class="inline-block">
-									<%= button_tag type: 'submit', class: "btn" do %>
+									<%= button_tag type: 'submit', method: :post, url: cart_items_path, class: "btn" do %>
 										<i class="fas fa-cart-arrow-down" style="font-size:30px;"></i>
 									<% end %>
 								</div>
 							<% end %>
-					</div>
-
-					<div class="inline-block">
-						<% if @cd.favorited_by?(current_user) %>
-							<div>
-								<%= link_to cd_favorite_path(@cd), method: :delete do %>
-								<i class="far fa-heart" aria-hidden="true" style="color: red;"></i><%= @cd.favorites.count %>
-								<% end %>
-							</div>
 						<% else %>
-							<div>
-							<%= link_to cd_favorite_path(@cd), method: :post do %><%= @cd.favorites.count %>
-							<i class="far fa-heart" aria-hidden="true"></i>
+							<%= form_for(@cart_item) do |f| %>
+							<%= render 'layouts/error_messages', model: f.object %>
+								<div class="inline-block">
+									<p>数量: <%= f.number_field :quantity, class: "quantity-field" %></p>
+								</div>
+								<%= f.hidden_field :cd_id, value: @cd.id %>
+								<%= f.hidden_field :cart_id, value: current_cart.id %>
+								<div class="inline-block">
+									<%= button_tag type: 'submit', method: :post, url: cart_items_path, class: "btn" do %>
+										<i class="fas fa-cart-arrow-down" style="font-size:30px;"></i>
+									<% end %>
+								</div>
 							<% end %>
-							</div>
 						<% end %>
 					</div>
-			<% else %>
+				<% if user_signed_in? %>
 					<div class="inline-block">
-							<%= form_for(@cart_item) do |f| %>
-								<div class="inline-block">
-									<p>数量: <%= f.number_field :quantity, class: "form-control" %></p>
-								</div>
-								<%= f.hidden_field :user_id, value: "0" %>
-								<div class="inline-block">
-									<%= button_to add_item_path(cd.id), method: :post do %>
-										<i class="fas fa-cart-arrow-down" style="font-size:30px;"></i>
-									<% end %>
-								</div>
-							<% end %>
+						<%= render 'favorite', cd: @cd %>
 					</div>
-
-					<div class="inline-block">
-
-						<button type="button" data-toggle="modal" data-target="#exampleModal">
-  							<i class="far fa-heart" aria-hidden="true"></i>
-						</button>
-						<%= @cd.favorites.count %>
-
-						<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  							<div class="modal-dialog" role="document">
-    							<div class="modal-content">
-      								<div class="modal-header">
-       									 <h5 class="modal-title" id="exampleModalLabel">いいねを押すにはログインしてください。</h5>
-        								<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-         									<span aria-hidden="true">&times;</span>
-      									</button>
-      								</div>
-      								<div class="modal-body">
-      									<%= link_to "Log In", new_user_session_path, class: "btn btn-default btn-sm" %>
-      									<%= link_to "Sign Up", new_user_registration_path, class: "btn btn-default btn-sm" %>
-      								</div>
-      								<div class="modal-footer">
-       									<button type="button" class="btn btn-secondary" data-dismiss="modal">閉じる</button>
-      								</div>
-    							</div>
-  							</div>
-						</div>
-					</div>
-
-						<button type="button" data-toggle="modal" data-target="#exampleModal" class="btn btn-default btn-sm">
+				<% else %>
+					<button type="button" data-toggle="modal" data-target="#exampleModal" class="btn btn-default btn-sm">
   							<i class="far fa-heart" aria-hidden="true"></i>
 						</button>
 						<%= @cd.favorites.count %>
 						<%= render 'modal' %>
-					</div>
+				<% end %>
 
-
-			<% end %>
 
 				<% if user_signed_in? && current_user.admin?  %>
 					<div class="inline-block">
@@ -109,17 +74,15 @@
 						<%= link_to "削除", cd_path(@cd.id), method: :delete, class: "btn btn-default" %>
 					</div>
 				<% end %>
-			</div>
+
 
 			<div>
 				<h3>コメント一覧</h3>
 				<div>
 					<% if @cd.comments.present? %>
-						<table>
 						<% @cd.comments.each do |comment| %>
-							<tr>
-								<td>
-									<strong><%= comment.user_id %>さんのコメント『<%= comment.comment_body %>』（CDのid: <%= comment.cd_id %>、コメントのId: <%= comment.id %>)</strong>
+							<div>
+								<strong><%= comment.user_id %>さんのコメント『<%= comment.comment_body %>』（CDのid: <%= comment.cd_id %>コメントのId: <%= comment.id %>)</strong>
 									<% comeid = comment.id %>
 									<% if comment.user == current_user %>
 									<button class="toEditForm">編集</button>
@@ -134,12 +97,13 @@
 											<% end %>
 										</div>
 									<% end %>
-										<% if user_signed_in? %>
+									<% if user_signed_in? %>
 										<% if current_user.admin? || comment.user == current_user %>
 											<%= link_to "コメントを削除しますか?", cd_comment_path(@cd.id,comeid.to_i), method: :delete, data: {confirm: '本当に削除しますか'} %>
 										<% end %>
-										<% end %>
-										<% if comment.comment_replies.present? %>
+									<% end %>
+
+									<% if comment.comment_replies.present? %>
 										<table>
 										<% comment.comment_replies.each do |rep| %>
 											<tr>
@@ -149,61 +113,55 @@
 												<td>Id: <%= rep.id %></td>
 												<% if rep.user == current_user %>
 												<td><button class="toEditForm">編集</button>
-													<div class="EditForm">
+													<span class="EditForm">
 														<% @rep = rep %>
 															<%= form_for(@rep) do |f| %>
-															<div>
+															<span>
 																<%= f.label :comment_reply_body, "返信内容" %>
 																<%= f.text_field :comment_reply_body, class: "form-control" %>
 																<%= f.hidden_field :comment_id, value: comment.id %>
 																<%= f.hidden_field :user_id, value: current_user.id %>
-															</div>
+															</span>
 																<%= f.submit %>
 															<% end %>
-													</div>
+													</span>
 												</td>
 												<% end %>
-												<% if user_signed_in? %>
+											<% if user_signed_in? %>
 												<% if current_user.admin? || comment.user == current_user %>  %>
 												<td><%= link_to "返信を削除しますか?", comment_reply_path(rep.id), method: :delete, data: {confirm: '本当に削除しますか?'} %></td>
 												<% end %>
 											</tr>
-										<% end %>
+											<% end %>
 										<% end %>
 										</table>
-										<% end %>
+									<% end %>
 
 									<% comeid = comment.id %>
 									<% if user_signed_in? %>
-									<button class="toReplyForm">返信</button>
-									<div class="ReplyForm">
+										<button class="toReplyForm">返信</button>
+										<span class="ReplyForm">
 										<%= form_for [comment, @comment_reply], url: comment_comment_replies_path(comment_id: comeid.to_i) do |f| %>
-											<div>
+											<span>
 												<%= f.label :comment_reply_body, "返信内容" %>
 												<%= f.text_field :comment_reply_body, class: "form-control" %>
 												<%= f.hidden_field :comment_id, value: comment.id %>
 												<%= f.hidden_field :user_id, value: current_user.id %>
-											</div>
+											</span>
 										<%= f.submit %>
 										<% end %>
 
-									</div>
+										</span>
 									<% else %>
-										<strong><%= link_to "返信するためにはログインしてください!", new_user_session_path %></strong>
-
-									<% else %>
-										<div class="inline-block">
+										<span class="inline-block">
 											<button type="button" data-toggle="modal" data-target="#exampleModal" class="btn btn-default btn-sm">返信</button>
 												<%= render 'modal' %>
-										</div>
-										</div>
-
+										</span>
 									<% end %>
-								</td>
-							</tr>
+								</div>
+							<% end %>
 						<% end %>
-						</table>
-					<% end %>
+						</div>
 				</div>
 
 <!-- New Comment -->
@@ -219,17 +177,10 @@
 				<% end %>
 				</div>
 				<% else %>
-
-        
-					<strong><%= link_to "コメントをするにはログインしてください!", new_user_session_path %></strong>
-        
-        
-				<div class="inline-block">
-					<button type="button" data-toggle="modal" data-target="#exampleModal" class="btn btn-default btn-sm">コメントを送る</button>
+					<div class="inline-block">
+						<button type="button" data-toggle="modal" data-target="#exampleModal" class="btn btn-default btn-sm">コメントを送る</button>
 						<%= render 'modal' %>
-				</div>
-        
-        
+					</div>
 				<% end %>
 <!-- [END] New Comment -->
 			</div>
@@ -261,5 +212,13 @@
 	}
 	.inline-block {
 		display: inline-block;
+	}
+	.quantity-field {
+		width: 50px;
+		border-radius: 3px;
+	}
+	.itemInCartNotif {
+		background-color: pink;
+		padding: 5px 10px 0 10px;
 	}
 </style>

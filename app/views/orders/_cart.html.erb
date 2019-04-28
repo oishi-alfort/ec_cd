@@ -1,0 +1,21 @@
+<h3>Cart Total</h3>
+	<table id="cartTotalTable">
+		<th>商品</th>
+		<th>価格</th>
+		<th>数量</th>
+		<th>小計</th>
+	<% order.order_items.each do |item| %>
+		<tr class="cartTotalTableRow">
+			<td><%= item.cd.cd_title %></td>
+			<td>¥ <%= item.price %></td>
+			<td><%= item.quantity %></td>
+			<td>¥ <%= item.price * item.quantity %></td>
+		</tr>
+	<% end %>
+	</table>
+
+<style>
+	#cartTotalTable th, #cartTotalTable td {
+		padding: 3px 10px;
+	}
+</style>

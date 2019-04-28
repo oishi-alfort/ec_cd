@@ -1,8 +1,10 @@
+<div class="blank">
+</div>
 <% if flash[:notice] %>
   <p><%= flash[:notice] %></p>
 <% end %>
   <div class="col-xs-6">
-    <h2>Log in</h2>
+    <h2>DEVISE Log in</h2>
    <div class="center-block">
      <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
       <div class="field">
@@ -20,3 +22,9 @@
 <% end %>
 </div>
 
+<style>
+  .blank {
+    height: 100px;
+    width:100% ;
+  }
+</style>

@@ -1,1 +1,79 @@
-checkout
+<div class="container">
+	<div class="row">
+<%= render 'orders/header' %>
+<h1>Shipping address</h1>
+<% if user_signed_in? %>
+<% if @user.last_name.present? && @user.first_name.present? %>
+<h3>Use User's address?</h3>
+<%= form_for(@order) do |f| %>
+<%= render 'layouts/error_messages', model: f.object %>
+	<div>
+	<%= f.label :gift_address %>
+	<%= f.text_field :gift_address, value: @user.post_code %>
+	</div>
+
+	<div>
+	<%= f.label :gift_postcode %>
+	<%= f.text_field :gift_postcode, value: @user.post_code %>
+	</div>
+
+	<div>
+	<%= f.label :gift_name %>
+	<%= f.text_field :gift_name, value: @user.last_name + @user.first_name %>
+	</div>
+
+	<div>
+	<%= f.label :gift_phone_number %>
+	<%= f.text_field :gift_phone_number, value: @user.phone_number %>
+	</div>
+<div>
+	<%= f.hidden_field :cart_id, value: current_cart %>
+	<%= f.hidden_field :user_id, value: @user.id %>
+<%= f.submit class: "btn btn-default" %>
+</div>
+<% end %>
+<% end %>
+<% end %>
+
+<h3>Input Address to Deliver Your Shopping</h3>
+<%= form_for(@order) do |f| %>
+<%= render 'layouts/error_messages', model: f.object %>
+	<div>
+	<%= f.label :gift_address %>
+	<%= f.text_field :gift_address %>
+	</div>
+	<div>
+	<%= f.label :gift_postcode %>
+	<%= f.text_field :gift_postcode %>
+	</div>
+	<div>
+	<%= f.label :gift_name %>
+	<%= f.text_field :gift_name %>
+	</div>
+
+	<div>
+	<%= f.label :gift_phone_number %>
+	<%= f.text_field :gift_phone_number %>
+	</div>
+	<% if user_signed_in? %>
+	<%= f.hidden_field :user_id, value: @user.id %>
+	<% else %>
+	<%= f.hidden_field :cart_id, value: current_cart.id %>
+	<%= f.hidden_field :user_id, value: 0 %>
+	<% end %>
+<div>
+<%= f.submit class: "btn btn-default" %>
+</div>
+<% end %>
+
+
+</div>
+</div>
+
+<script>
+	$(document).ready(function(){
+		$('#fst').html('<i class="fas fa-circle"></i>')
+	});
+</script>
+<style>
+</style>

@@ -4,7 +4,7 @@
   <p>※登録情報は配送時に使用します。</p>
   <P>※登録後にマイページからも編集できます。</P>
   <div class=content_1>
-     <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
+     <%= form_for(resource, as: resource_name, url: user_registration_path) do |f| %>
      <%= render "devise/shared/error_messages", resource: resource %>
     
      <div class="row">
@@ -74,3 +74,9 @@
 
 
 <%= render "devise/shared/links" %>
+<style>
+  .blank {
+    height: 100px;
+    width:100% ;
+  }
+</style>

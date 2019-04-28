@@ -42,7 +42,10 @@ class Users::RegistrationsController < Devise::RegistrationsController
   #  @user = User.find_by(id: params[:id])
  # end
 
- protected
+    protected
+def user_params
+    params.require(:user).permit(:user_name,:first_name,:last_name,:first_name_kana,:last_name_kana,:post_code,:phone_number,:password )
+end
 
 # def user_params
 #     params.require(:user).permit(:user_name,:first_name,:last_name,:first_name_kana,:last_name_kana,:post_code,:phone_number,:password )

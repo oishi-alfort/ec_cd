@@ -21,7 +21,6 @@ ActiveRecord::Schema.define(version: 2019_04_27_032507) do
   end
 
   create_table "cart_items", force: :cascade do |t|
-    t.integer "user_id"
     t.integer "cd_id"
     t.integer "quantity"
     t.datetime "created_at", null: false
@@ -30,8 +29,12 @@ ActiveRecord::Schema.define(version: 2019_04_27_032507) do
   end
 
   create_table "carts", force: :cascade do |t|
+    t.integer "user_id", default: 0
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.datetime "deleted_at"
+    t.string "session"
+    t.index ["deleted_at"], name: "index_carts_on_deleted_at"
   end
 
   create_table "categories", force: :cascade do |t|
@@ -51,6 +54,8 @@ ActiveRecord::Schema.define(version: 2019_04_27_032507) do
     t.integer "category_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.datetime "deleted_at"
+    t.index ["deleted_at"], name: "index_cds_on_deleted_at"
   end
 
   create_table "comment_replies", force: :cascade do |t|
@@ -127,14 +132,7 @@ ActiveRecord::Schema.define(version: 2019_04_27_032507) do
     t.string "gift_phone_number"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-  end
-
-  create_table "pick_ups", force: :cascade do |t|
-    t.integer "cd_id"
-    t.string "pickup_title"
-    t.text "pickup_body"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.integer "cart_id"
   end
 
   create_table "pickups", force: :cascade do |t|
@@ -170,6 +168,8 @@ ActiveRecord::Schema.define(version: 2019_04_27_032507) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "adress"
+    t.datetime "deleted_at"
+    t.index ["deleted_at"], name: "index_users_on_deleted_at"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end

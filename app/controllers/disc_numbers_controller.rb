@@ -23,6 +23,6 @@ class DiscNumbersController < ApplicationController
 	end
 
 	def project_params
-		params.require(:disc_number).permit(:disc_number, songs_attributes: [:id, :song_roder, :song_name, :_destroy])
+		params.require(:disc_number).permit(:disc_number, songs_attributes: [:id, :song_order, :song_name, :_destroy])
 	end
 end

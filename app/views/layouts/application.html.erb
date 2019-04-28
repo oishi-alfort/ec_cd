@@ -21,16 +21,23 @@
       <div class="row">
         <div class="col-lg-12">
       <nav class="nav navbar-nav navbar-left">
-        <span style="color:white;font-size:x-large;">logo</span>
+        <span style="color:white;font-size:x-large;"><%= link_to root_path do %><%= image_tag 'cd_logo.png' %><% end %></span>
       </nav>
       <nav>
         <ul class="nav navbar-nav navbar-right" style="color: white;">
           <li><%= link_to "About",'/about' %> </li>
+          <li><%= link_to "CD", cds_path %> </li>
           <li><%= render 'layouts/search', {search: @search} %></li>
-          <li><%= link_to "カート",'/cart'%> <li>
+          <li><%= link_to "カート",'/cart'%>
+              <% if current_cart.cart_items.present? %>
+                <%= current_cart.cart_items.count %> Items you have!
+              <% end %><li>
+             <li>Your Cart Id is<%= current_cart.id %></li>
           <% if user_signed_in? %>
           <li><%= current_user.id %><%= current_user.email %></li>
           <li><%= link_to "ログアウト", logout_path %></li>
+          <% else %>
+            <li><%= link_to "ログイン", new_user_session_path %></li>
           <% end %>
         </ul>
       </nav>
