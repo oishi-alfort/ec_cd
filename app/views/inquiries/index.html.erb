@@ -17,10 +17,11 @@
 <tbody>
   <% @inquiries.each do |inquiry| %>
   <tr>
-     
-     
-     <th><%= inquiry.user.created_at %></th>
+     <% if inquiry.user.present? %>
+     <th><%= inquiry.user_id %></th>
+     <th><%= inquiry.user.created_at.strftime('%Y%m%d') %></th>
      <th><%= inquiry.user.user_name %></th>
+     <% end %>
      <th><%= inquiry.inquiry_category %></th>
      <th><%= inquiry.inquiry_body %></th>
    

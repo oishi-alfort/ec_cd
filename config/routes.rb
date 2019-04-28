@@ -54,16 +54,18 @@ Rails.application.routes.draw do
   # get 'artists/show'
   
   #kazumi
-  devise_for :users, :controllers => {
-  :registrations => 'users/registrations',
-  :sessions => 'users/sessions'   
-} 
-  resources :users
+ 
   devise_scope :user do
     get "user/:id", :to => "users#show"
     get "signup", :to => "users/registrations#new"
-    get "users/edit", :to => "users/registrations#edit"
+    get "users/:id/edit", :to => "users/registrations#edit"
     get "login", :to => "users/sessions#new"
     get "logout", :to => "users/sessions#destroy"
   end
+  
+   devise_for :users, :controllers => {
+  :registrations => 'users/registrations',
+  :sessions => 'users/sessions'   
+} 
+ resources :users
 end

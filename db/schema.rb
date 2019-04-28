@@ -10,9 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-
-ActiveRecord::Schema.define(version: 2019_04_24_110508) do
-
+ActiveRecord::Schema.define(version: 2019_04_27_032507) do
 
   create_table "artists", force: :cascade do |t|
     t.string "artist_name"
@@ -25,7 +23,7 @@ ActiveRecord::Schema.define(version: 2019_04_24_110508) do
   create_table "cart_items", force: :cascade do |t|
     t.integer "user_id"
     t.integer "cd_id"
-    t.integer "quantity", default: 0
+    t.integer "quantity"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "cart_id"
@@ -171,6 +169,7 @@ ActiveRecord::Schema.define(version: 2019_04_24_110508) do
     t.boolean "admin", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "adress"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end

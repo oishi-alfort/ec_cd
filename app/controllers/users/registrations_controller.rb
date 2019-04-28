@@ -7,12 +7,13 @@ class Users::RegistrationsController < Devise::RegistrationsController
   # GET /resource/sign_up
   # def new
   #   super
+  
   # end
 
   # POST /resource
-  # def create
-  #   super
-  # end
+  #def create
+   # super
+  #end
 
   # GET /resource/edit
   # def edit
@@ -41,7 +42,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
   #  @user = User.find_by(id: params[:id])
  # end
 
-#   # protected
+ protected
 
 # def user_params
 #     params.require(:user).permit(:user_name,:first_name,:last_name,:first_name_kana,:last_name_kana,:post_code,:phone_number,:password )
@@ -53,14 +54,13 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
   # If you have extra params to permit, append them to the sanitizer.
    def configure_account_update_params
-    devise_parameter_sanitizer.permit(:account_update, keys: [:user_name,:first_name,:last_name,:first_name_kana,:last_name_kana,:post_code,:phone_number])
+    devise_parameter_sanitizer.permit(:account_update, keys: [:user_name,:first_name,:last_name,:first_name_kana,:last_name_kana,:post_code,:phone_number,:adress,:email])
    end
 
   # The path used after sign up.
    def after_sign_up_path_for(resource)
       "/users/#{current_user.id}"
    end
-   
    
 
   # The path used after sign up for inactive accounts.

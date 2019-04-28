@@ -5,6 +5,7 @@
        <h2> マイページ</h2>
          <li> 氏名: <%= @user.first_name %><%= @user.last_name %></li>
          <li> 郵便番号: <%= @user.post_code %></li>
+          <li> 住所: <%= @user.adress %></li>
          <li> 電話番号: <%= @user.phone_number %></li>
          <li> ユーザー名: <%= @user.user_name %></li>
          <li> Email:  <%= @user.email %></li>
@@ -13,10 +14,9 @@
     <div align="right">
     	<P> ※登録情報は配送時に使用します。</P>
 	    <ul>
- 	      <li></li><button type="button" class="btn btn-primary ">注文履歴</button></li>
-	      <li><button type="button" class="btn btn-primary ">登録情報編集</button></li>
-	      <li><button type="button" class="btn btn-primary ">お問い合わせ</button></li>
-	        <%= link_to "logout",  destroy_user_session_path, method: :delete,class:"glyphicon glyphicon-log-out logout" %>
+	         <%= link_to "注文履歴",new_inquiry_path, class:'btn btn-default' %>
+	         <%= link_to "登録情報編集", signup_path, class:'btn btn-default' %> 
+	         <%= link_to "お問い合わせ",new_inquiry_path, class:'btn btn-default' %> 
 	    </ul>
     </div>
    
